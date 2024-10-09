@@ -12,7 +12,7 @@
 
 Более подробный гайд можно посмотреть [тут](https://habr.com/ru/companies/ruvds/articles/574352/).
 
-![{B7726D8B-184D-4E5E-B267-3526286D8B72}](https://github.com/user-attachments/assets/dd8219b9-9e9b-4ace-a022-948bb6f2fb71).
+![{B7726D8B-184D-4E5E-B267-3526286D8B72}](https://github.com/user-attachments/assets/dd8219b9-9e9b-4ace-a022-948bb6f2fb71)
 
 # Лабораторная работа 3
 
