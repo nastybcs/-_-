@@ -8,5 +8,81 @@ _Дерево_ — связный ациклический граф.[1] Связ
 
 _N-арное дерево_ — это дерево, в котором степени вершин не превосходят N+1.
 Реализация
-### Класс Treenode
-В начале кода представлен класс Treenode.Он представляет узел дерева.Каждый узел содержит значение(data) и вектор указателей на его дочерние узлы(children).
+### Структура Treenode
+В начале кода представлена структура Treenode.Она представляет узел дерева.Каждый узел содержит значение(data) и вектор указателей на его дочерние узлы(children).
+```c++
+#include<iostream>
+#include<vector>
+using namespace std;
+struct Treenode {
+	int data;
+	vector <Treenode*> children; 
+   };
+```
+### Функция добавления узла addChild принимает на вход указатель на корневой узел дерева и значение арности дерева(максимальное количество дочерних узлов).
+```c++
+void addChild(Treenode*& parent, int n) {
+    if (!parent) {
+        cout << "Ошибка: Дерево не создано! Создайте корень сначала.\n";
+        return;
+    }
+    int o; int depth;
+    cout << "Введите уровень (1 это корень)" << endl;
+    cin >> depth;
+    Treenode* g = parent;
+    if (depth == 1) {
+        if (parent->children.size() < n) {
+            int value;
+            cout << "Введите значение нового узла: ";
+            cin >> value;
+            Treenode* newNode = new Treenode{ value, {} };
+            parent->children.push_back(newNode);
+            cout << "Узел добавлен к корню!\n";
+        }
+        else {
+            cout << "Ошибка: Достигнута максимальная арность (" << n << ") у корня.\n";
+        }
+        return;
+    }
+    for (int i = 0; i < depth - 1; i++) {
+        if (g->children.empty()) {
+            cout << "Ошибка: У этого узла нет потомков.\n";
+            return;
+        }
+        cout << "Доступные узлы: ";
+        for (int j = 0; j < g->children.size(); j++) {
+            cout << j + 1 << ": " << g->children[j]->data << " ";
+        }
+        cout << "Введите номер узла " << endl;
+        cin >> o;
+        if (o < 1 || o > g->children.size()) {
+            cout << "Ошибка: Неверный номер узла!\n";
+            return;
+        }
+        g = g->children[o - 1];
+    }
+    cout << "Дети текущего узла: ";
+    for (int j = 0; j < g->children.size(); j++) {
+        cout << g->children[j]->data;
+    }
+    int value;
+    cout << "Введите значение " << endl;
+    cin >> value;
+    if (g->children.size() < n) {
+        Treenode* k = new Treenode;
+        k->data = value;
+        g->children.push_back(k);
+        cout << "Узел добавлен!\n";
+        return;
+    }
+    else {
+        cout << "Ошибка: Достигнута максимальная арность (" << n << ").\n";
+    }
+}```
+##Разбор функции
+Функция позволяет пользователю добавлять узлы в дерево, выбирая уровень, 
+ * а затем путь к нужному узлу. Если указанный уровень — корень (`depth == 1`), 
+ * узел добавляется непосредственно в `parent`.  
+ * 
+ * Если `depth > 1`, происходит последовательный выбор узлов на каждом уровне.  
+ * Если у выбранного узла нет детей, предлагается создать новый узел или отменить операцию. 
