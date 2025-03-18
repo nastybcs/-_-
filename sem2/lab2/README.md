@@ -119,3 +119,44 @@ void bubbleSort(vector<string>& items) {
 }
 ```
 Извлекает элементы из строки-множества и возвращает их в виде отсортированного вектора. Проходит по символам строки, собирает элементы (учитывая скобки), рекурсивно сортирует их с помощью ```sortSubset``` и возвращает вектор.
+
+## Функция ```unionSets```
+
+```c++
+  void unionSets(vector<string>& sets, string& initialResult) {
+    if (sets.size() == 0) return;
+
+    vector<string> uniqueElements;
+
+
+    for (int i = 0; i < sets.size(); i++) {
+        vector<string> elements = extractAndSortElements(sets[i]);
+        for (const string& element : elements) {
+            bool isDuplicate = false;
+            for (const string& existingElement : uniqueElements) {
+                if (existingElement == element) {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+            if (!isDuplicate) {
+                uniqueElements.push_back(element);
+            }
+        }
+    }
+
+
+    string finalResult;
+    for (int i = 0; i < uniqueElements.size(); i++) {
+        finalResult += uniqueElements[i];
+        if (i < uniqueElements.size() - 1) {
+            finalResult += ",";
+        }
+    }
+
+    cout << "Результат объединения:" << endl;
+    cout << "{" << finalResult << "}" << endl;
+    initialResult = "{" + finalResult + "}";
+}
+```
+Объединяет все множества из вектора, убирая дубликаты, и сохраняет результат в строку. Для каждого множества извлекает элементы, проверяет их на уникальность, собирает в одну строку и выводит на экран, а также записывает в ```initialResult```.
