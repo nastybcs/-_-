@@ -22,3 +22,60 @@ void bubbleSort(vector<string>& items) {
 }
 ```
 Сравнивает соседние элементы и меняет их местами, если первый больше второго, повторяет это несколько раз, пока всё не отсортируется.
+## Функция ```sortSubset```
+```с++
+ string sortSubset(const string& subset) {
+    if (subset.front() != '{' || subset.back() != '}') {
+        return subset;
+    }
+    string content = subset.substr(1, subset.size() - 2);
+    vector<string> elements;
+    string currentElement;
+    int braceDepth = 0;
+
+
+    for (char c : content) {
+        if (c == '{' && braceDepth == 0) {
+            braceDepth++;
+            currentElement += c;
+        }
+        else if (c == '}' && braceDepth > 0) {
+            braceDepth--;
+            currentElement += c;
+            if (braceDepth == 0 && !currentElement.empty()) {
+                elements.push_back(sortSubset(currentElement));
+                currentElement.clear();
+            }
+        }
+        else if (c == ',' && braceDepth == 0) {
+            if (!currentElement.empty()) {
+                elements.push_back(sortSubset(currentElement));
+                currentElement.clear();
+            }
+        }
+        else {
+            currentElement += c;
+            if (c == '{') braceDepth++;
+            else if (c == '}') braceDepth--;
+        }
+    }
+    if (!currentElement.empty()) {
+        elements.push_back(sortSubset(currentElement));
+    }
+
+
+    bubbleSort(elements);
+
+
+    string sortedSubset = "{";
+    for (int i = 0; i < elements.size(); i++) {
+        sortedSubset += elements[i];
+        if (i < elements.size() - 1) {
+            sortedSubset += ",";
+        }
+    }
+    sortedSubset += "}";
+    return sortedSubset;
+}
+```
+Сортирует элементы внутри строки, которая представляет множество, включая вложенные множества. Проверяет, есть ли {} в начале и конце строки. Если да, извлекает содержимое, разбивает на элементы (учитывая вложенность), сортирует их и собирает обратно в строку с {}.
